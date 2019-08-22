@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
         validate(value) {
             if (!validator.isEmail(value)) {
-                throw new Error('Email is invalid')
+                throw new Error('Email is invalid!')
             }
         }
     },
@@ -26,13 +26,20 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if (value.toLowerCase().includes('password')) {
-                throw new Error(`Password cannot contain 'password'`)
+                throw new Error(`Password cannot contain 'password'!`)
             }
         }
     },
     age: {
-        type: Number
+        type: Number,
+        validate(value) {
+            if (value < 0) {
+                throw new Error('Age must be a positive integer!')
+            }
+        }
     }
+}, {
+    timestamps: true
 })
 
 const User = mongoose.model('User', userSchema)
